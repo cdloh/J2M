@@ -25,6 +25,7 @@
 		input = input.replace(/-([^-]*)-/g, '-$1-');
 
 		input = input.replace(/\{code(:([a-z]+))?\}([^]*)\{code\}/gm, '```$2$3```');
+		input = input.replace(/\{color(:([a-z]+))?\}([^]*)\{color\}/gm, '<color:$2>$3</color>');
 
 		input = input.replace(/!([^\n\s]+)!/, '![]($1)');
 		input = input.replace(/\[(.+?)\|(.+)\]/g, '[$1]($2)');
@@ -79,20 +80,20 @@
 		var START = 'J2MBLOCKPLACEHOLDER';
 		var replacementsList = [];
 		var counter = 0;
-		
+
 		input = input.replace(/`{3,}(\w+)?((?:\n|.)+?)`{3,}/g, function(match, synt, content) {
 		    var code = '{code';
-		
+
 		    if (synt) {
 		        code += ':' + synt;
 		    }
-		
+
 		    code += '}' + content + '{code}';
 		    var key = START + counter++ + '%%';
 		    replacementsList.push({key: key, value: code});
 		    return key;
 		});
-		
+
 		input = input.replace(/`([^`]+)`/g, function(match, content) {
 		    var code = '{{'+ content + '}}';
 		    var key = START + counter++ + '%%';
